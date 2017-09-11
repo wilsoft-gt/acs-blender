@@ -12,7 +12,7 @@ if [ "$1" == "recompilar" ] || [ "$1" == "recompile" ] ; then
 	fi
 
 	cd
-	cd blender-src
+	cd ~/blender-src
 	cd blender
 	git pull --rebase
 	git submodule foreach git pull --rebase origin master
@@ -21,7 +21,7 @@ if [ "$1" == "recompilar" ] || [ "$1" == "recompile" ] ; then
 	#por ejemplo tu procesador tiene 4 nucleos seria asi -j5
 	sudo make -j3 BUILD_CMAKE_ARGS="-U *SNDFILE* -U *PYTHON* -U *BOOST* -U *Boost* -U *OPENCOLORIO* -U *OPENEXR* -U *OPENIMAGEIO* -U *LLVM* -U *CYCLES* -U *OPENSUBDIV* -U *OPENVDB* -U *COLLADA* -U *FFMPEG* -D WITH_CODEC_SNDFILE=ON -D PYTHON_VERSION=3.5 -D WITH_INSTALL_PORTABLE=OFF -D WITH_OPENCOLORIO=ON -D OPENCOLORIO_ROOT_DIR=/opt/lib/ocio -D WITH_OPENIMAGEIO=ON -D OPENIMAGEIO_ROOT_DIR=/opt/lib/oiio -D WITH_CYCLES_OSL=OFF -D WITH_LLVM=OFF -D WITH_OPENSUBDIV=ON -D OPENSUBDIV_ROOT_DIR=/opt/lib/osd -D WITH_OPENVDB=ON -D WITH_OPENVDB_BLOSC=ON -D WITH_OPENCOLLADA=ON -D WITH_CODEC_FFMPEG=ON -D FFMPEG_LIBRARIES='avformat;avcodec;avutil;avdevice;swscale;swresample;lzma;rt;theoradec;theora;theoraenc;vorbisenc;vorbisfile;vorbis;ogg;xvidcore;vpx;mp3lame;x264;openjpeg;openjpeg_JPWL'"
 
-	cd ~/blender-src/build_linux
+	cd ../build_linux
 	sudo make install
 	echo "Done / Finalizado"
 	exit
