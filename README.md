@@ -1,4 +1,5 @@
 # acs-blender
+![Main Menu](resources/main_menu.png)
 <h2>Auto compile script for blender</h2>
 <p>This script helps to compile blender 3d source code. What this really does is give a easy way to compile blender without going through all the steps on the blender dev page.</p>
 <ul>
@@ -13,5 +14,7 @@
 <ul>
 <li>Solamente lo he probado en Ubuntu y Fedora</li>
 <li>Ejecuta "./acs-blender.sh" utilizando la consola de comandos</li>
-<li>Actualizada la opcion de actualizar el codigo y compilarlo agregando el argumento <code>recompilar</code> ejemplo: <br><code>./acs-blender.sh recompilar</code></li>
+<li>Agregada la opcion de actualizar el codigo y compilarlo agregando el argumento <code>recompilar</code> ejemplo: <br><code>./acs-blender.sh recompilar</code></li>
 </ul>
+
+![Main Menu](resources/compiled.png)
