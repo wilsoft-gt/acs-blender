@@ -4,15 +4,13 @@
 if [ "$1" == "recompilar" ] || [ "$1" == "recompile" ] ; then
 	if [ "$1" == "recompilar" ] ; then
 		echo "Recompilando"
-		read key "enter"
 	fi
 	if [ "$1" == "recompile" ] ; then
 		echo "Recompiling"
-		read key "enter"
 	fi
 
 	cd
-	cd ~/blender-src
+	cd ~/blender-scr
 	cd blender
 	git add .
 	git commit -m "adding local changes"
