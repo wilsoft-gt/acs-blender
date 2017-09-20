@@ -14,6 +14,8 @@ if [ "$1" == "recompilar" ] || [ "$1" == "recompile" ] ; then
 	cd
 	cd ~/blender-src
 	cd blender
+	git add .
+	git commit -m "adding local changes"
 	git pull --rebase
 	git submodule foreach git pull --rebase origin master
 
