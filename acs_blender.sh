@@ -10,16 +10,14 @@ if [ "$1" == "recompilar" ] || [ "$1" == "recompile" ] ; then
 	fi
 
 	cd
-	cd ~/blender-scr
+	cd blender-scr
 	cd blender
-	git add .
-	git commit -m "adding local changes"
 	git pull --rebase
 	git submodule foreach git pull --rebase origin master
 
 	#cambia el -j3 por el numero de nucleos de tu procesador +1
 	#por ejemplo tu procesador tiene 4 nucleos seria asi -j5
-	sudo make -j3 BUILD_CMAKE_ARGS="-U *SNDFILE* -U *PYTHON* -U *BOOST* -U *Boost* -U *OPENCOLORIO* -U *OPENEXR* -U *OPENIMAGEIO* -U *LLVM* -U *CYCLES* -U *OPENSUBDIV* -U *OPENVDB* -U *COLLADA* -U *FFMPEG* -D WITH_CODEC_SNDFILE=ON -D PYTHON_VERSION=3.5 -D WITH_INSTALL_PORTABLE=OFF -D WITH_OPENCOLORIO=ON -D OPENCOLORIO_ROOT_DIR=/opt/lib/ocio -D WITH_OPENIMAGEIO=ON -D OPENIMAGEIO_ROOT_DIR=/opt/lib/oiio -D WITH_CYCLES_OSL=OFF -D WITH_LLVM=OFF -D WITH_OPENSUBDIV=ON -D OPENSUBDIV_ROOT_DIR=/opt/lib/osd -D WITH_OPENVDB=ON -D WITH_OPENVDB_BLOSC=ON -D WITH_OPENCOLLADA=ON -D WITH_CODEC_FFMPEG=ON -D FFMPEG_LIBRARIES='avformat;avcodec;avutil;avdevice;swscale;swresample;lzma;rt;theoradec;theora;theoraenc;vorbisenc;vorbisfile;vorbis;ogg;xvidcore;vpx;mp3lame;x264;openjpeg;openjpeg_JPWL'"
+sudo make -j 2 BUILD_CMAKE_ARGS="-U *SNDFILE* -U *PYTHON* -U *BOOST* -U *Boost* -U *OPENCOLORIO* -U *OPENEXR* -U *OPENIMAGEIO* -U *LLVM* -U *CYCLES* -U *OPENSUBDIV* -U *OPENVDB* -U *COLLADA* -U *FFMPEG* -U *ALEMBIC* -D WITH_CODEC_SNDFILE=ON -D PYTHON_VERSION=3.6 -D PYTHON_ROOT_DIR=/opt/lib/python-3.6 -D WITH_OPENCOLORIO=ON -D OPENCOLORIO_ROOT_DIR=/opt/lib/ocio -D WITH_OPENIMAGEIO=ON -D OPENIMAGEIO_ROOT_DIR=/opt/lib/oiio -D WITH_CYCLES_OSL=ON -D WITH_LLVM=ON -D LLVM_VERSION=3.4 -D OSL_ROOT_DIR=/opt/lib/osl -D LLVM_ROOT_DIR=/opt/lib/llvm -D LLVM_STATIC=ON -D WITH_OPENSUBDIV=ON -D OPENSUBDIV_ROOT_DIR=/opt/lib/osd -D WITH_OPENVDB=ON -D WITH_OPENVDB_BLOSC=ON -D WITH_OPENCOLLADA=ON -D WITH_JACK=ON -D WITH_JACK_DYNLOAD=ON -D WITH_INSTALL_PORTABLE=OFF -D WITH_GAMEENGINE=ON -D WITH_PLAYER=ON -D WITH_FFTW3=ON -D WITH_MOD_OCEANSIM=ON -D WITH_ALEMBIC=ON -D ALEMBIC_ROOT_DIR=/opt/lib/alembic -D WITH_CODEC_FFMPEG=ON -D FFMPEG_LIBRARIES='avformat;avcodec;avutil;avdevice;swscale;swresample;lzma;rt;theoradec;theora;theoraenc;vorbisenc;vorbisfile;vorbis;ogg;xvidcore;vpx;mp3lame;x264;openjpeg;openjpeg_JPWL'"
 
 	cd ../build_linux
 	sudo make install
@@ -55,7 +53,7 @@ eng_cp6="For more info and updates go to https://wilsoftbl.blogspot.com/"
 clear
 COLUMNS=$(tput cols) 
 banner="###########################################################################"
-acs_blender_txt="###################       ACS-BLENDER Beta 1.2       ######################"
+acs_blender_txt="###################       ACS-BLENDER 1.3       ######################"
 #variables generales
 #variables del menu principal eng/spa/other
 inicio_languaje_txt="Idioma/Language"
@@ -75,7 +73,6 @@ eng_txt_dl_envf="Preparing environment for fedora, please wait."
 eng_txt_dl_sc="Downloading the source code"
 eng_txt_dl_pe="Please take a sit and wait for the next step."
 eng_txt_dl_cancel="If you want to cancel the script press CTRL+C."
-eng_txt_press_ent="Press ENTER"
 eng_txt_dl_dep="Downloading dependencies (without OSL, because some compatibity issues)"
 eng_txt_compile="Compiling, it will take a moment"
 eng_txt_susccess="The compilation has been successfully"
@@ -88,7 +85,6 @@ spa_txt_dl_entf="Preparando entorno para fedora, porfavor espere."
 spa_txt_dl_cf="Descargando el codigo fuente,"
 spa_txt_dl_pa="porfavor tome asiento y espere para el siguiente paso."
 spa_txt_dl_cancelar="Si quiere cancelar el script presione CTRL+C"
-spa_txt_presione_ent="Presione ENTER"
 spa_txt_dl_dep="Descargando dependencias (excluyendo OSL por compatibilidad)"
 spa_txt_compilar="Compilando, esto tomara algun tiempo"
 spa_txt_exito="La compilacion ha finalizado exitosamente"
@@ -145,9 +141,7 @@ case $inicio_menu_opt in
 		clear
 		for ((espacio=0; espacio<11;espacio++)) do echo "" 
 		done
-		printf "%*s\n" $(((${#eng_txt_dl_envu}+$COLUMNS)/2)) "$eng_txt_dl_envu"
-		printf "%*s\n" $(((${#eng_txt_press_ent}+$COLUMNS)/2)) "$eng_txt_press_ent"	
-		read key "enter"
+		printf "%*s\n" $(((${#eng_txt_dl_envu}+$COLUMNS)/2)) "$eng_txt_dl_envu"	
 
 		sudo apt-get update
 		sudo apt-get upgrade
@@ -165,8 +159,7 @@ case $inicio_menu_opt in
 		for ((espacio=0; espacio<11;espacio++)) do echo "" 
 		done
 		printf "%*s\n" $(((${#eng_txt_dl_envf}+$COLUMNS)/2)) "$eng_txt_dl_envf"
-		printf "%*s\n" $(((${#eng_txt_press_ent}+$COLUMNS)/2)) "$eng_txt_press_ent"	
-		read key "enter"
+	
 
 		sudo yum update
 		sudo yum upgrade
@@ -187,8 +180,8 @@ case $inicio_menu_opt in
 	printf "%*s\n" $(((${#eng_txt_dl_sc}+$COLUMNS)/2)) "$eng_txt_dl_sc"
 	printf "%*s\n" $(((${#eng_txt_dl_pe}+$COLUMNS)/2)) "$eng_txt_dl_pe"
 	printf "%*s\n" $(((${#eng_txt_dl_cancel}+$COLUMNS)/2)) "$eng_txt_dl_cancel"
-	printf "%*s\n" $(((${#eng_txt_press_ent}+$COLUMNS)/2)) "$eng_txt_press_ent"
-	read key "enter"
+
+
 	git clone http://git.blender.org/blender.git
 	#commands download source code
 
@@ -197,9 +190,9 @@ case $inicio_menu_opt in
 	for ((espacio=0; espacio<11;espacio++)) do echo "" 
 	done
 	printf "%*s\n" $(((${#eng_txt_dl_dep}+$COLUMNS)/2)) "$eng_txt_dl_dep"
-	printf "%*s\n" $(((${#eng_txt_press_ent}+$COLUMNS)/2)) "$eng_txt_press_ent"
-	read key "enter"
-	./blender/build_files/build_environment/install_deps.sh --with-all --skip-osl --skip-llvm
+
+
+	./blender/build_files/build_environment/install_deps.sh --with-all
 	#command install dependencies
 
 	#Compiling source code text
@@ -207,11 +200,11 @@ case $inicio_menu_opt in
 	for ((espacio=0; espacio<11;espacio++)) do echo "" 
 	done
 	printf "%*s\n" $(((${#eng_txt_compile}+$COLUMNS)/2)) "$eng_txt_compile"
-	printf "%*s\n" $(((${#eng_txt_press_ent}+$COLUMNS)/2)) "$eng_txt_press_ent"
-	read key "enter"
+
+
 
 	cd blender
-	make -j3 BUILD_CMAKE_ARGS="-U *SNDFILE* -U *PYTHON* -U *BOOST* -U *Boost* -U *OPENCOLORIO* -U *OPENEXR* -U *OPENIMAGEIO* -U *LLVM* -U *CYCLES* -U *OPENSUBDIV* -U *OPENVDB* -U *COLLADA* -U *FFMPEG* -D WITH_CODEC_SNDFILE=ON -D PYTHON_VERSION=3.5 -D WITH_INSTALL_PORTABLE=OFF -D WITH_OPENCOLORIO=ON -D OPENCOLORIO_ROOT_DIR=/opt/lib/ocio -D WITH_OPENIMAGEIO=ON -D OPENIMAGEIO_ROOT_DIR=/opt/lib/oiio -D WITH_CYCLES_OSL=OFF -D WITH_LLVM=OFF -D WITH_OPENSUBDIV=ON -D OPENSUBDIV_ROOT_DIR=/opt/lib/osd -D WITH_OPENVDB=ON -D WITH_OPENVDB_BLOSC=ON -D WITH_OPENCOLLADA=ON -D WITH_CODEC_FFMPEG=ON -D FFMPEG_LIBRARIES='avformat;avcodec;avutil;avdevice;swscale;swresample;lzma;rt;theoradec;theora;theoraenc;vorbisenc;vorbisfile;vorbis;ogg;xvidcore;vpx;mp3lame;x264;openjpeg;openjpeg_JPWL'"
+sudo make -j 2 BUILD_CMAKE_ARGS="-U *SNDFILE* -U *PYTHON* -U *BOOST* -U *Boost* -U *OPENCOLORIO* -U *OPENEXR* -U *OPENIMAGEIO* -U *LLVM* -U *CYCLES* -U *OPENSUBDIV* -U *OPENVDB* -U *COLLADA* -U *FFMPEG* -U *ALEMBIC* -D WITH_CODEC_SNDFILE=ON -D PYTHON_VERSION=3.6 -D PYTHON_ROOT_DIR=/opt/lib/python-3.6 -D WITH_OPENCOLORIO=ON -D OPENCOLORIO_ROOT_DIR=/opt/lib/ocio -D WITH_OPENIMAGEIO=ON -D OPENIMAGEIO_ROOT_DIR=/opt/lib/oiio -D WITH_CYCLES_OSL=ON -D WITH_LLVM=ON -D LLVM_VERSION=3.4 -D OSL_ROOT_DIR=/opt/lib/osl -D LLVM_ROOT_DIR=/opt/lib/llvm -D LLVM_STATIC=ON -D WITH_OPENSUBDIV=ON -D OPENSUBDIV_ROOT_DIR=/opt/lib/osd -D WITH_OPENVDB=ON -D WITH_OPENVDB_BLOSC=ON -D WITH_OPENCOLLADA=ON -D WITH_JACK=ON -D WITH_JACK_DYNLOAD=ON -D WITH_INSTALL_PORTABLE=OFF -D WITH_GAMEENGINE=ON -D WITH_PLAYER=ON -D WITH_FFTW3=ON -D WITH_MOD_OCEANSIM=ON -D WITH_ALEMBIC=ON -D ALEMBIC_ROOT_DIR=/opt/lib/alembic -D WITH_CODEC_FFMPEG=ON -D FFMPEG_LIBRARIES='avformat;avcodec;avutil;avdevice;swscale;swresample;lzma;rt;theoradec;theora;theoraenc;vorbisenc;vorbisfile;vorbis;ogg;xvidcore;vpx;mp3lame;x264;openjpeg;openjpeg_JPWL'"
 
 	cd ../build_linux
 	sudo make install
@@ -219,8 +212,8 @@ case $inicio_menu_opt in
 	for ((espacio=0; espacio<3;espacio++)) do echo "" 
 	done
 	printf "%*s\n" $(((${#eng_txt_susccess}+$COLUMNS)/2)) "$eng_txt_susccess"
-	printf "%*s\n" $(((${#eng_txt_press_ent}+$COLUMNS)/2)) "$eng_txt_press_ent"
-	read key "enter"
+
+
 	#Compiling source code commands
 
 	#finishing and copyright
@@ -234,8 +227,8 @@ case $inicio_menu_opt in
 	printf "%*s\n" $(((${#eng_cp5}+$COLUMNS)/2)) "$eng_cp5"
 	printf "%*s\n" $(((${#eng_cp6}+$COLUMNS)/2)) "$eng_cp6"
 	printf "%*s\n" $(((${#eng_txt_thaks}+$COLUMNS)/2)) "$eng_txt_thaks"
-	printf "%*s\n" $(((${#eng_txt_press_ent}+$COLUMNS)/2)) "$eng_txt_press_ent"
-	read key "enter"
+
+
 
 	;;
 
@@ -261,8 +254,8 @@ case $inicio_menu_opt in
 		for ((espacio=0; espacio<11;espacio++)) do echo "" 
 		done
 		printf "%*s\n" $(((${#spa_txt_dl_entu}+$COLUMNS)/2)) "$spa_txt_dl_entu"
-		printf "%*s\n" $(((${#spa_txt_presione_ent}+$COLUMNS)/2)) "$spa_txt_presione_ent"
-		read key "enter"
+
+
 
 		sudo apt-get update
 		sudo apt-get upgrade
@@ -280,8 +273,8 @@ case $inicio_menu_opt in
 		for ((espacio=0; espacio<11;espacio++)) do echo "" 
 		done
 		printf "%*s\n" $(((${#spa_txt_dl_entf}+$COLUMNS)/2)) "$spa_txt_dl_entf"
-		printf "%*s\n" $(((${#spa_txt_presione_ent}+$COLUMNS)/2)) "$spa_txt_presione_ent"
-		read key "enter"
+
+
 
 		sudo yum update
 		sudo yum upgrade
@@ -302,8 +295,8 @@ case $inicio_menu_opt in
 	printf "%*s\n" $(((${#spa_txt_dl_cf}+$COLUMNS)/2)) "$spa_txt_dl_cf"
 	printf "%*s\n" $(((${#spa_txt_dl_pa}+$COLUMNS)/2)) "$spa_txt_dl_pa"
 	printf "%*s\n" $(((${#spa_txt_dl_cancelar}+$COLUMNS)/2)) "$spa_txt_dl_cancelar"
-	printf "%*s\n" $(((${#spa_txt_presione_ent}+$COLUMNS)/2)) "$spa_txt_presione_ent"
-	read key "enter"
+
+
 	git clone http://git.blender.org/blender.git
 	#comandos para descargar codigo fuente
 
@@ -312,10 +305,9 @@ case $inicio_menu_opt in
 	for ((espacio=0; espacio<11;espacio++)) do echo "" 
 	done
 	printf "%*s\n" $(((${#spa_txt_dl_dep}+$COLUMNS)/2)) "$spa_txt_dl_dep"
-	printf "%*s\n" $(((${#spa_txt_presione_ent}+$COLUMNS)/2)) "$spa_txt_presione_ent"
-	read key "enter"
-	./blender/build_files/build_environment/install_deps.sh --with-all --skip-osl --skip-llvm
 
+
+	./blender/build_files/build_environment/install_deps.sh --with-all
 	#comandos para descargar dependencias
 
 	#compilando el codigo texto
@@ -323,11 +315,11 @@ case $inicio_menu_opt in
 	for ((espacio=0; espacio<11;espacio++)) do echo "" 
 	done
 	printf "%*s\n" $(((${#spa_txt_compilar}+$COLUMNS)/2)) "$spa_txt_compilar"
-	printf "%*s\n" $(((${#spa_txt_presione_ent}+$COLUMNS)/2)) "$spa_txt_presione_ent"
-	read key "enter"
+
+
 
 	cd blender
-	make -j3 BUILD_CMAKE_ARGS="-U *SNDFILE* -U *PYTHON* -U *BOOST* -U *Boost* -U *OPENCOLORIO* -U *OPENEXR* -U *OPENIMAGEIO* -U *LLVM* -U *CYCLES* -U *OPENSUBDIV* -U *OPENVDB* -U *COLLADA* -U *FFMPEG* -D WITH_CODEC_SNDFILE=ON -D PYTHON_VERSION=3.5 -D WITH_INSTALL_PORTABLE=OFF -D WITH_OPENCOLORIO=ON -D OPENCOLORIO_ROOT_DIR=/opt/lib/ocio -D WITH_OPENIMAGEIO=ON -D OPENIMAGEIO_ROOT_DIR=/opt/lib/oiio -D WITH_CYCLES_OSL=OFF -D WITH_LLVM=OFF -D WITH_OPENSUBDIV=ON -D OPENSUBDIV_ROOT_DIR=/opt/lib/osd -D WITH_OPENVDB=ON -D WITH_OPENVDB_BLOSC=ON -D WITH_OPENCOLLADA=ON -D WITH_CODEC_FFMPEG=ON -D FFMPEG_LIBRARIES='avformat;avcodec;avutil;avdevice;swscale;swresample;lzma;rt;theoradec;theora;theoraenc;vorbisenc;vorbisfile;vorbis;ogg;xvidcore;vpx;mp3lame;x264;openjpeg;openjpeg_JPWL'"
+sudo make -j 2 BUILD_CMAKE_ARGS="-U *SNDFILE* -U *PYTHON* -U *BOOST* -U *Boost* -U *OPENCOLORIO* -U *OPENEXR* -U *OPENIMAGEIO* -U *LLVM* -U *CYCLES* -U *OPENSUBDIV* -U *OPENVDB* -U *COLLADA* -U *FFMPEG* -U *ALEMBIC* -D WITH_CODEC_SNDFILE=ON -D PYTHON_VERSION=3.6 -D PYTHON_ROOT_DIR=/opt/lib/python-3.6 -D WITH_OPENCOLORIO=ON -D OPENCOLORIO_ROOT_DIR=/opt/lib/ocio -D WITH_OPENIMAGEIO=ON -D OPENIMAGEIO_ROOT_DIR=/opt/lib/oiio -D WITH_CYCLES_OSL=ON -D WITH_LLVM=ON -D LLVM_VERSION=3.4 -D OSL_ROOT_DIR=/opt/lib/osl -D LLVM_ROOT_DIR=/opt/lib/llvm -D LLVM_STATIC=ON -D WITH_OPENSUBDIV=ON -D OPENSUBDIV_ROOT_DIR=/opt/lib/osd -D WITH_OPENVDB=ON -D WITH_OPENVDB_BLOSC=ON -D WITH_OPENCOLLADA=ON -D WITH_JACK=ON -D WITH_JACK_DYNLOAD=ON -D WITH_INSTALL_PORTABLE=OFF -D WITH_GAMEENGINE=ON -D WITH_PLAYER=ON -D WITH_FFTW3=ON -D WITH_MOD_OCEANSIM=ON -D WITH_ALEMBIC=ON -D ALEMBIC_ROOT_DIR=/opt/lib/alembic -D WITH_CODEC_FFMPEG=ON -D FFMPEG_LIBRARIES='avformat;avcodec;avutil;avdevice;swscale;swresample;lzma;rt;theoradec;theora;theoraenc;vorbisenc;vorbisfile;vorbis;ogg;xvidcore;vpx;mp3lame;x264;openjpeg;openjpeg_JPWL'"
 
 	cd ../build_linux
 	sudo make install
@@ -336,8 +328,8 @@ case $inicio_menu_opt in
 	for ((espacio=0; espacio<3;espacio++)) do echo "" 
 	done
 	printf "%*s\n" $(((${#spa_txt_exito}+$COLUMNS)/2)) "$spa_txt_exito"
-	printf "%*s\n" $(((${#spa_txt_presione_ent}+$COLUMNS)/2)) "$spa_txt_presione_ent"
-	read key "enter"
+
+
 	#Compiling source code commands
 
 	#finishing and copyright
@@ -351,8 +343,8 @@ case $inicio_menu_opt in
 	printf "%*s\n" $(((${#spa_da5}+$COLUMNS)/2)) "$spa_da5"
 	printf "%*s\n" $(((${#spa_da6}+$COLUMNS)/2)) "$spa_da6"
 	printf "%*s\n" $(((${#spa_txt_gracias}+$COLUMNS)/2)) "$spa_txt_gracias"
-	printf "%*s\n" $(((${#spa_txt_presione_ent}+$COLUMNS)/2)) "$spa_txt_presione_ent"
-	read key "enter"
+
+
 	;;
 		
 	#menu null
