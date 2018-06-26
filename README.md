@@ -8,13 +8,11 @@
 <li>To update the code and recompile add the argument <code>recompile</code> example: <br><code>./acs-blender.sh recompile</code>
 </ul>
 <h2>Release notes</h2>
-<h3>1.3)
+<h3>1.3)</h3>
 <ul>
 <li>Now full compilation including OSL and LLVM</li>
 <li>Deleted anoying "Press Enter" to continue</li>
-</ul> 
-
-Now support compiling with OSL and LLVM</h3>
+</ul>
 
 <hr>
 
